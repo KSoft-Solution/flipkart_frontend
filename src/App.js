@@ -2,8 +2,9 @@ import React from "react";
 import WebFont from "webfontloader";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import { Header, Footer, NotFound } from "./components";
-import { Home, Login, Register } from "./pages";
+import { Home, Login, Register, Account } from "./pages";
 
 const App = () => {
   const { pathname } = useLocation();
@@ -28,6 +29,14 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/account"
+          element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

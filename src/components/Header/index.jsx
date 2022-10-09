@@ -3,6 +3,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { PrimaryDropdown, SecondaryDropdown } from "./components";
 import logo from "../../assets/images/logo.png";
 import { SearchBox } from "../";
@@ -10,7 +11,8 @@ import { SearchBox } from "../";
 const Header = () => {
   const [togglePrimaryDropDown, setTogglePrimaryDropDown] = useState(false);
   const [toggleSecondaryDropDown, setToggleSecondaryDropDown] = useState(false);
-  const isAuthenticated = false
+  const { isAuthenticated,user } = useSelector((state) => state.userReducer);
+
   return (
     <header className="bg-primary-blue fixed top-0 py-2.5 w-full z-10">
       <div className="w-full sm:w-9/12 px-1 sm:px-4 m-auto flex justify-between items-center relative">
@@ -50,7 +52,7 @@ const Header = () => {
           {togglePrimaryDropDown && (
             <PrimaryDropdown
               setTogglePrimaryDropDown={setTogglePrimaryDropDown}
-            //   user={user}
+                user={user}
             />
           )}
           <span

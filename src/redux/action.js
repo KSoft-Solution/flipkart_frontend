@@ -1,8 +1,11 @@
 import { bindActionCreators } from "redux";
+import * as authAction from "../actions/auth.action";
 
-const rootAction = (dispatch) =>
-  useMemo(() => bindActionCreators({
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+      ...authAction,
+  }, dispatch)
+}
 
-  }, dispatch), [dispatch]);
-  
-export default rootAction;
+
+export default mapDispatchToProps

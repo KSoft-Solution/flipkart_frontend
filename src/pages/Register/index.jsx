@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import FormSidebar from "./components/formSidebar";
-import { MetaData } from "../../components";
+import { registerUser } from "../../actions/auth.action";
+import { MetaData, BackdropLoader, Message } from "../../components";
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [showError, setShowError] = useState(false)
+  const { loading, isAuthenticated, error } = useSelector(
+    (state) => state.userReducer
+  );
+
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -25,14 +35,29 @@ const Register = () => {
     formData.set("email", email);
     formData.set("gender", gender);
     formData.set("password", password);
+    dispatch(registerUser(formData));
   };
 
   const handleDataChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    if (error) {
+      setShowError(true)
+    }
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [dispatch, error, isAuthenticated, navigate]);
+
   return (
     <>
       <MetaData title="Register | Flipkart" />
+      {loading && <BackdropLoader />}
+      {showError && (
+        <Message message={error} type="error" title="Error" variant="filled" />
+      )}
       <main className="w-full mt-12 sm:pt-20 sm:mt-0">
         <div className="flex sm:w-4/6 sm:mt-4 m-auto mb-7 bg-white shadow-lg">
           <FormSidebar
@@ -112,8 +137,7 @@ const Register = () => {
                     required
                   />
                 </div>
-                <div className="flex flex-col w-full justify-between sm:flex-row gap-3 items-center">
-                </div>
+                <div className="flex flex-col w-full justify-between sm:flex-row gap-3 items-center"></div>
                 <button
                   type="submit"
                   className="text-white py-3 w-full bg-primary-orange shadow hover:shadow-lg rounded-sm font-medium"
