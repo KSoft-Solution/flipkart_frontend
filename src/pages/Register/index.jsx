@@ -7,13 +7,12 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import FormSidebar from "./components/formSidebar";
-import { registerUser } from "../../actions/auth.action";
-import { MetaData, BackdropLoader, Message } from "../../components";
+import { clearErrors, registerUser } from "../../actions/auth.action";
+import { MetaData, BackdropLoader } from "../../components";
 
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showError, setShowError] = useState(false)
   const { loading, isAuthenticated, error } = useSelector(
     (state) => state.userReducer
   );
@@ -44,7 +43,7 @@ const Register = () => {
 
   useEffect(() => {
     if (error) {
-      setShowError(true)
+      dispatch(clearErrors())
     }
     if (isAuthenticated) {
       navigate("/");
@@ -55,9 +54,6 @@ const Register = () => {
     <>
       <MetaData title="Register | Flipkart" />
       {loading && <BackdropLoader />}
-      {showError && (
-        <Message message={error} type="error" title="Error" variant="filled" />
-      )}
       <main className="w-full mt-12 sm:pt-20 sm:mt-0">
         <div className="flex sm:w-4/6 sm:mt-4 m-auto mb-7 bg-white shadow-lg">
           <FormSidebar

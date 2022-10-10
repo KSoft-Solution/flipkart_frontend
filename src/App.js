@@ -2,6 +2,7 @@ import React from "react";
 import WebFont from "webfontloader";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { ToastContainer } from 'react-toastify';
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { Header, Footer, NotFound } from "./components";
 import { Home, Login, Register, Account } from "./pages";
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
+      <ToastContainer/>
     </>
   );
 };

@@ -1,14 +1,17 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { MinCategory } from "../components";
 
 import Sidebar from "./components/sidebar";
-import { MetaData,Loader } from "../../components";
+import { MetaData, Loader } from "../../components";
 
 const Account = () => {
   const navigate = useNavigate();
 
-  const { user, loading, isAuthenticated } = useSelector((state) => state.userReducer);
+  const { user, loading, isAuthenticated } = useSelector(
+    (state) => state.userReducer
+  );
 
   useEffect(() => {
     if (isAuthenticated === false) {
@@ -28,6 +31,7 @@ const Account = () => {
         <Loader />
       ) : (
         <>
+          <MinCategory />
           <main className="w-full mt-12 sm:mt-0">
             <div className="flex gap-3.5 sm:w-11/12 sm:mt-4 m-auto mb-7">
               <Sidebar activeTab={"profile"} />

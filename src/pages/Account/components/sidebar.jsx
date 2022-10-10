@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import FolderIcon from "@mui/icons-material/Folder";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import PersonIcon from "@mui/icons-material/Person";
@@ -9,7 +9,6 @@ import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar = ({ activeTab }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { user } = useSelector((state) => state.userReducer);

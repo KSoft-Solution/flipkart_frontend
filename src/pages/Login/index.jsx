@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { loginUser } from "../../actions/auth.action";
-import { MetaData, BackdropLoader, Message } from "../../components";
+import { clearErrors, loginUser } from "../../actions/auth.action";
+import { MetaData, BackdropLoader } from "../../components";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,6 @@ const Login = () => {
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showError, setShowError] = useState(false);
 
   const { loading, isAuthenticated, error } = useSelector(
     (state) => state.userReducer
@@ -27,7 +26,7 @@ const Login = () => {
 
   useEffect(() => {
     if (error) {
-      setShowError(true);
+      dispatch(clearErrors())
     }
     if (isAuthenticated) {
       navigate(`/${redirect}`);
@@ -38,9 +37,6 @@ const Login = () => {
     <>
       <MetaData title="Login | Flipkart" />
       {loading && <BackdropLoader />}
-      {showError && (
-        <Message message={error} type="error" title="Error" variant="filled" />
-      )}
       <main className="w-full mt-12 sm:pt-20 sm:mt-0">
         <div className="flex sm:w-4/6 sm:mt-4 m-auto mb-7 bg-white shadow-lg">
           <div className="loginSidebar bg-primary-blue p-10 pr-12 hidden sm:flex flex-col gap-4 w-2/5">
