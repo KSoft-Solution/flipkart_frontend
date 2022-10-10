@@ -1,64 +1,71 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TextField, FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate,Link } from "react-router-dom";
-import { FormSidebar } from "../components";
+import {
+  clearErrors,
+  loadUser,
+  updateProfile,
+} from "../../actions/auth.action";
+import { UPDATE_PROFILE_RESET } from "../../constants/auth.constant";
 import { MetaData, BackdropLoader } from "../../components";
-import { clearErrors, registerUser } from "../../actions/auth.action";
 
-const Register = () => {
+const UpdateProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, isAuthenticated, error } = useSelector(
-    (state) => state.userReducer
-  );
+  const { user } = useSelector((state) => state.userReducer);
+  const { error, isUpdated, loading } = useSelector((state) => state.profile);
 
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    gender: "",
-    password: "",
-    cpassword: "",
-  });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
 
-  const { name, email, gender, password, cpassword } = user;
-
-  const handleRegister = (e) => {
+  const updateProfileHandler = (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.set("name", name);
     formData.set("email", email);
     formData.set("gender", gender);
-    formData.set("password", password);
-    dispatch(registerUser(formData));
-  };
-
-  const handleDataChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    dispatch(updateProfile(formData));
   };
 
   useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+      setGender(user.gender);
+    }
     if (error) {
       dispatch(clearErrors());
     }
-    if (isAuthenticated) {
-      navigate("/");
+    if (isUpdated) {
+      dispatch(loadUser());
+      navigate("/account");
+      dispatch({ type: UPDATE_PROFILE_RESET });
     }
-  }, [dispatch, error, isAuthenticated, navigate]);
+  }, [dispatch, error, user, isUpdated, navigate]);
 
   return (
     <>
-      <MetaData title="Register | Flipkart" />
+      <MetaData title="Update Profile | Flipkart" />
       {loading && <BackdropLoader />}
       <main className="w-full mt-12 sm:pt-20 sm:mt-0">
         <div className="flex sm:w-4/6 sm:mt-4 m-auto mb-7 bg-white shadow-lg">
-          <FormSidebar
-            title="Looks like you're new here!"
-            tag="Sign up with your mobile number to get started"
-          />
+          <div className="loginSidebar bg-primary-blue px-9 py-10 hidden sm:flex flex-col gap-4 w-2/5">
+            <h1 className="font-medium text-white text-3xl">
+              Looks like you're new here!
+            </h1>
+            <p className="text-gray-200 text-lg pr-2">
+              Sign up with your mobile number to get started
+            </p>
+          </div>
           <div className="flex-1 overflow-hidden">
+            <h2 className="text-center text-2xl font-medium mt-6 text-gray-800">
+              Update Profile
+            </h2>
             <form
-              onSubmit={(e) => handleRegister(e)}
+              onSubmit={updateProfileHandler}
               encType="multipart/form-data"
               className="p-5 sm:p-10"
             >
@@ -66,21 +73,19 @@ const Register = () => {
                 <div className="flex flex-col w-full justify-between sm:flex-col gap-3 items-center">
                   <TextField
                     fullWidth
-                    id="full-name"
                     label="Full Name"
                     name="name"
                     value={name}
-                    onChange={handleDataChange}
+                    onChange={(e) => setName(e.target.value)}
                     required
                   />
                   <TextField
                     fullWidth
-                    id="email"
                     label="Email"
                     type="email"
                     name="email"
                     value={email}
-                    onChange={handleDataChange}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -95,52 +100,33 @@ const Register = () => {
                       <FormControlLabel
                         name="gender"
                         value="male"
-                        onChange={handleDataChange}
+                        checked={gender === "male"}
+                        onChange={(e) => setGender(e.target.value)}
                         control={<Radio required />}
                         label="Male"
                       />
                       <FormControlLabel
                         name="gender"
                         value="female"
-                        onChange={handleDataChange}
+                        checked={gender === "female"}
+                        onChange={(e) => setGender(e.target.value)}
                         control={<Radio required />}
                         label="Female"
                       />
                     </RadioGroup>
                   </div>
                 </div>
-                <div className="flex flex-col w-full justify-between sm:flex-row gap-3 items-center">
-                  <TextField
-                    id="password"
-                    label="Password"
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={handleDataChange}
-                    required
-                  />
-                  <TextField
-                    id="confirm-password"
-                    label="Confirm Password"
-                    type="password"
-                    name="cpassword"
-                    value={cpassword}
-                    onChange={handleDataChange}
-                    required
-                  />
-                </div>
-                <div className="flex flex-col w-full justify-between sm:flex-row gap-3 items-center"></div>
                 <button
                   type="submit"
-                  className="text-white py-3 w-full bg-primary-orange shadow hover:shadow-lg rounded-sm font-medium"
+                  className="text-white py-3 w-full bg-primary-orange shadow rounded-sm font-medium hover:shadow-lg"
                 >
-                  Signup
+                  Update
                 </button>
                 <Link
-                  to="/login"
-                  className="hover:bg-gray-50 text-primary-blue text-center py-3 w-full shadow border rounded-sm font-medium"
+                  className="hover:bg-gray-100 text-primary-blue text-center py-3 w-full shadow border rounded-sm font-medium"
+                  to="/account"
                 >
-                  Existing User? Log in
+                  Cancel
                 </Link>
               </div>
             </form>
@@ -151,4 +137,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default UpdateProfile;

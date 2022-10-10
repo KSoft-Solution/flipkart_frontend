@@ -2,13 +2,26 @@ import React from "react";
 import WebFont from "webfontloader";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { ToastContainer } from 'react-toastify';
+import { useDispatch } from "react-redux";
+import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { Header, Footer, NotFound } from "./components";
-import { Home, Login, Register, Account } from "./pages";
+import {
+  Home,
+  Login,
+  Register,
+  Account,
+  ForgotPassword,
+  ResetPassword,
+  UpdatePassword,
+  UpdateProfile,
+} from "./pages";
+import { loadUser } from "./actions/auth.action";
 
 const App = () => {
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     WebFont.load({
       google: {
@@ -16,6 +29,11 @@ const App = () => {
       },
     });
   });
+
+  // useEffect(()=>{
+  //   dispatch(loadUser())
+  // },[dispatch])
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -30,6 +48,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/password/forgot" element={<ForgotPassword />} />
+        <Route path="/password/reset/:token" element={<ResetPassword />} />
         <Route
           path="/account"
           element={
@@ -38,10 +58,26 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/account/update"
+          element={
+            <ProtectedRoute>
+              <UpdateProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/password/update"
+          element={
+            <ProtectedRoute>
+              <UpdatePassword />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
-      <ToastContainer/>
+      <ToastContainer />
     </>
   );
 };

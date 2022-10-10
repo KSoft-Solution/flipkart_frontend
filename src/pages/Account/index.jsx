@@ -41,7 +41,7 @@ const Account = () => {
                     <span className="font-medium text-lg">
                       Personal Information{" "}
                       <Link
-                        to="/"
+                        to="/account/update"
                         className="text-sm text-primary-blue font-medium ml-8 cursor-pointer"
                       >
                         Edit
@@ -113,13 +113,13 @@ const Account = () => {
                     <span className="font-medium text-lg">
                       Email Address
                       <Link
-                        to="/"
+                        to="/account/update"
                         className="text-sm text-primary-blue font-medium ml-3 sm:ml-8 cursor-pointer"
                       >
                         Edit
                       </Link>
                       <Link
-                        to="/"
+                        to="/password/update"
                         className="text-sm text-primary-blue font-medium ml-3 sm:ml-8"
                       >
                         Change Password

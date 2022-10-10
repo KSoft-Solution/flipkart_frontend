@@ -1,4 +1,4 @@
-import TextField from "@mui/material/TextField";
+import {TextField} from "@mui/material";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -93,7 +93,7 @@ const Login = () => {
                       Login
                     </button>
                     <Link
-                      to="/"
+                      to="/password/forgot"
                       className="hover:bg-gray-50 text-primary-blue text-center py-3 w-full shadow border rounded-sm font-medium"
                     >
                       Forgot Password?

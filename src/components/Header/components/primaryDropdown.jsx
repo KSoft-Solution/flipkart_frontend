@@ -15,7 +15,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 const PrimaryDropdown = ({ setTogglePrimaryDropDown, user }) => {
   const navigate = useNavigate();
-
   const navs = [
     {
       title: "Supercoin Zone",
@@ -68,7 +67,7 @@ const PrimaryDropdown = ({ setTogglePrimaryDropDown, user }) => {
       {user.role === "admin" && (
         <Link
           className="pl-3 py-3.5 border-b flex gap-3 items-center hover:bg-gray-50 rounded-t"
-          to="/"
+          to="/admin/dashboard"
         >
           <span className="text-primary-blue">
             <DashboardIcon sx={{ fontSize: "18px" }} />
@@ -78,7 +77,7 @@ const PrimaryDropdown = ({ setTogglePrimaryDropDown, user }) => {
       )}
       <Link
         className="pl-3 py-3.5 border-b flex gap-3 items-center hover:bg-gray-50 rounded-t"
-        to="/"
+        to="/account"
       >
         <span className="text-primary-blue">
           <AccountCircleIcon sx={{ fontSize: "18px" }} />
